@@ -6,23 +6,30 @@ import pro.sky.EmployeeBookStream.exception.EmployeeNotFoundException;
 import pro.sky.EmployeeBookStream.exception.EmployeeStorageIsFullException;
 import pro.sky.EmployeeBookStream.model.Employee;
 import pro.sky.EmployeeBookStream.service.EmployeeService;
+import pro.sky.EmployeeBookStream.service.EmployeeValidationService;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     public static final int EMPLOYEE_MAX_COUNT = 10;
 
     private final Map<String, Employee> employees;
+    private final EmployeeValidationService validationService;
 
-    public EmployeeServiceImpl() {
+    public EmployeeServiceImpl(EmployeeValidationService validationService) {
         this.employees = new HashMap<>();
+        this.validationService = validationService;
     }
+
 
     @Override
     public Employee add(String firstName, String lastName) {
+        validationService.validate(firstName, lastName);
         if (employees.size() >= EMPLOYEE_MAX_COUNT) {
             throw new EmployeeStorageIsFullException();
         }
