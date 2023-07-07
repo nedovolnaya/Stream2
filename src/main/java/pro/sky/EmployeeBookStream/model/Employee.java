@@ -3,6 +3,8 @@ package pro.sky.EmployeeBookStream.model;
 import java.util.Objects;
 import java.util.Random;
 
+import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
+
 public class Employee {
     private String firstName;
     private String lastName;
@@ -10,16 +12,17 @@ public class Employee {
     private int departmentId;
 
 
-    public Employee(String firstName, String lastName,int salary,int departmentId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Employee(String firstName, String lastName, int salary, int departmentId) {
+        this.firstName = capitalize(firstName);
+        this.lastName = capitalize(lastName);
         this.salary = salary;
         this.departmentId = departmentId;
     }
+
     public Employee(String firstName, String lastName) {
         Random random = new Random();
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = capitalize(firstName);
+        this.lastName = capitalize(lastName);
         this.salary = random.nextInt(50_000) + 500;
         this.departmentId = random.nextInt(5) + 1;
     }
